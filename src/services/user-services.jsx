@@ -12,3 +12,10 @@ export async function CreateUser(dataForm){
 
     return user
 }
+
+export async function getUser(){
+
+    const {token , ...user} = await collection('/profile')
+
+    return user
+}

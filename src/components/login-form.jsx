@@ -3,7 +3,7 @@ import { useState } from "react"
 import Input from "./input";
 import Login from "../services/auth-services";
 
-function LoginForm(){
+function LoginForm({onLogin}){
 
     const [ formData , setFormData] = useState({
         email : 'pedroar@mail.com',
@@ -23,9 +23,7 @@ function LoginForm(){
 
         event.preventDefault()
 
-       Login(formData)
-       .then((user)=> console.log(user))
-       .catch((error) => console.log(error));
+       onLogin(formData)
      
     }
 

@@ -1,25 +1,31 @@
-import { useState } from "react"
-import LoginForm from "./components/login-form"
-import SignUpForm from "./components/signup-form"
+import { useEffect, useState } from "react"
+import AuthtenticatedApp from "./AuthenticatedApp"
+import UnauthtenticatedApp from "./UnauthtenticatedApp"
+
+
+import { getUser } from "./services/user-services"
+import Login from "./services/auth-services"
 
 function App(){
 
-     const [showLogin , setShowLogin] = useState(true)
+     const [user , setUser] = useState(null)
 
-     const handleClick = () =>{
-          setShowLogin(!showLogin)
-     }
+     useEffect(() => {
 
-     return(
-        
-        <div>
-          <h1>Welcome to PokeCollection</h1>
-          {showLogin ? <LoginForm/> : <SignUpForm/> }
-          <button onClick={handleClick}>
-               {showLogin? "Create Account" : "Login"}
-          </button>
-        </div>
-     )
+          getUser().then(user => setUser(user)).catch(error => console.log(error))
+          //getUser - para preguntar si existe el token en el sessionStorage
+      }, [])
+
+      function handleLogin (credentials){
+
+          // Login(credentials).then(setUser).catch(console.log)
+          Login(credentials).then( user => setUser(user)).catch(error => console.log(error))
+      }
+
+     console.log(user)
+
+     return user ? <AuthtenticatedApp/> : <UnauthtenticatedApp onLogin = {handleLogin}/>
+
 }
 
 export default App
