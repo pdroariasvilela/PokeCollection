@@ -1,4 +1,4 @@
-import { SearchPage } from "./pages/search-pages"
+import SearchPage  from "./pages/search-pages"
 
 
 function AuthtenticatedApp(){
