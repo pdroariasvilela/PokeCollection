@@ -3,7 +3,7 @@ import AuthtenticatedApp from "./AuthenticatedApp"
 import UnauthtenticatedApp from "./UnauthtenticatedApp"
 
 
-import { getUser } from "./services/user-services"
+import { CreateUser, getUser } from "./services/user-services"
 import Login from "./services/auth-services"
 
 function App(){
@@ -17,14 +17,17 @@ function App(){
       }, [])
 
       function handleLogin (credentials){
-
           // Login(credentials).then(setUser).catch(console.log)
           Login(credentials).then( user => setUser(user)).catch(error => console.log(error))
       }
 
+      function handleSignUp (dataUser){
+        CreateUser(dataUser).then(setUser).catch(console.log)
+      }
+
      console.log(user)
 
-     return user ? <AuthtenticatedApp/> : <UnauthtenticatedApp onLogin = {handleLogin}/>
+     return user ? <AuthtenticatedApp/> : <UnauthtenticatedApp onLogin = {handleLogin} onSignUp = {handleSignUp}/>
 
 }
 

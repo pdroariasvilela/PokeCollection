@@ -1,10 +1,10 @@
 import { useState } from "react"
 
 import Input from "./input";
-import { CreateUser } from "../services/user-services";
 
 
-function SignUpForm(){
+
+function SignUpForm({onSignUp}){
 
     const [ formData , setFormData] = useState({
         email : '',
@@ -26,8 +26,8 @@ function SignUpForm(){
 
         event.preventDefault()
 
-        CreateUser(formData).then((user)=> console.log(user)).catch((error)=> console.log(error))
-     
+        onSignUp(formData)
+        
     }
 
      return(
