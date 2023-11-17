@@ -6,21 +6,21 @@ async function collection(enpoint , {method , headers , body} = {}){
 
     if(token){
         headers = {
-            Autorizathion :`Bearer ${token}`,
+            Authorization :`Bearer ${token}`,
             ...headers,
         }
     }
 
     if(body){
         headers = {
-            'Content-type': 'application/json',
+            "Content-Type": "application/json",
             ...headers,
         }
     }
 
     const config = {
-        method  : method || body? 'POST' : 'GET',
-        headers : headers,
+        method  : method ||(body? 'POST' : 'GET'),
+        headers ,
         body : body ? JSON.stringify(body) : null
     }
 

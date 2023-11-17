@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import Input from "../components/input"
 import { getPokemon } from "../services/pokeapi-service"
 import styled from "@emotion/styled"
 import { RiStarFill } from "react-icons/ri";
+import { createFavorite } from "../services/favorite-service";
 
 
 const PokemonImg = styled.img`
@@ -31,8 +32,10 @@ function SearchPage() {
 
     // const [error , setError] = useState(null)
 
+    const [favorites , setFavorite] = useState([])
+
     const [state , setState] = useState ({
-        status : 'iddle',
+        status : 'iddle', //error , //succes 
         data : null,
         error : null
     })
@@ -48,8 +51,7 @@ function SearchPage() {
         return newId
     }
 
-    function PokemonData({ pokemon }) {
-
+    function PokemonData({ pokemon , onAddFavorite}) {
         return (
 
             <div>
@@ -62,12 +64,11 @@ function SearchPage() {
                 <p>Weight : {pokemon.weight / 10} kg</p>
                 <p>Height : {pokemon.height / 10} m</p>
 
-                <FavoriteButton>
+                <FavoriteButton onClick={onAddFavorite} >
                     <RiStarFill />
                     Mark as favorite
                 </FavoriteButton>
             </div>
-
         )
     }
 
@@ -96,6 +97,21 @@ function SearchPage() {
             })
     }
 
+    
+    function handleAddFavorite(){
+        const data = {
+           pokemon_name :pokemon.name ,
+           pokemon_id : pokemon.id,
+           pokemon_type : pokemon.types[0].type.name ,
+           pokemon_avatar_url : pokemon.sprites.other["official-artwork"].front_default 
+        }
+
+        createFavorite(data).then((newFavorite)=> setFavorite([...favorites , newFavorite]))
+    }  
+
+    useEffect(()=>{
+        console.log({favorites})
+    },[favorites])
 
 
     return (
@@ -111,7 +127,7 @@ function SearchPage() {
                 <button>Search</button>
             </form>
             { status === 'iddle'  && 'No data pokemon' }
-            { status === 'succes' && <PokemonData pokemon={pokemon} />}
+            { status === 'succes' && <PokemonData pokemon={pokemon} onAddFavorite={handleAddFavorite} />}
             { status === 'error' && <p style={{color : "red"}}>{error}</p>}
             
         </div>
